@@ -1,12 +1,12 @@
 import './App.css';
-// import UserEditForm from './components/UserEditForm'
-import SignIn from './components/SignIn'
+import Header from './components/Header'
 
-function App() {
+function App(props) {
   return (
     <div className="App">
       <header className="App-header">
-        <SignIn />
+        <Header />
+        {props.children}
       </header>
     </div>
   );

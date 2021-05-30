@@ -1,6 +1,7 @@
 import { useState } from "react"
 import ForgotPassword from "./ForgotPassword"
 import Email from "../common-components/Fields/Email"
+import AuthAPI from '../apis/AuthAPI'
 
 const SignIn = function (props) {
   let [email, setEmail] = useState('')
@@ -14,7 +15,13 @@ const SignIn = function (props) {
       email,
       password
     }
-    console.log(user)
+    new AuthAPI().login(user).then(resp => {
+      if (resp.success) {
+        // TODO store the authentication token
+        // COOKIES
+      }
+    })
+    setSubmitted(false)
     setFailedSubmit(true)
   }
   let invalidMessage = 'the email or the password you entered is invalid'
@@ -22,7 +29,6 @@ const SignIn = function (props) {
     <div>
       <form onSubmit={signUserIn}>
         {failedSubmit && invalidMessage}
-        <label htmlFor="email">Email</label>
         <Email id="email" name="email"
           value={email} onChange={setEmail}
         />
