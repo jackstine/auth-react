@@ -8,7 +8,10 @@ const ForgotPassword = function (props) {
   let handleSubmit = function (e) {
     setSentHandler(true)
     e.preventDefault()
-    new UserAPI().forgotPassword(email)
+    new UserAPI().forgotPassword(email).then(resp => {
+      // TODO send the user a message saying that they will
+      // receive an email
+    })
     // TODO Send API call to send out temp password email
   }
   // TODO add in email component to handle the email validation

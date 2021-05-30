@@ -1,9 +1,12 @@
 import { useState } from "react"
+import {Formik, Form} from 'formik'
 import ForgotPassword from "./ForgotPassword"
 import Email from "../common-components/Fields/Email"
 import AuthAPI from '../apis/AuthAPI'
+import UserAPI from '../apis/UserAPI'
+import PasswordsMustMatch from '../common-components/formik/PasswordsMustMatch'
 
-const SignIn = function (props) {
+const LogInWithUserInfo = function (props) {
   let [email, setEmail] = useState('')
   let [password, setPassword] = useState('')
   let [submitted, setSubmitted] = useState(false)
@@ -17,11 +20,16 @@ const SignIn = function (props) {
     }
     new AuthAPI().login(user).then(resp => {
       if (resp.success) {
-        // TODO store the authentication token
-        // COOKIES
+        if (resp.verifiedWithTemporary) {
+          props.onTempPasswordReceived({inputInfo: user})
+          return
+        } else {
+          // TODO store the authentication token
+          // COOKIES
+        }
       }
+      setSubmitted(false)
     })
-    setSubmitted(false)
     setFailedSubmit(true)
   }
   let invalidMessage = 'the email or the password you entered is invalid'
@@ -38,7 +46,66 @@ const SignIn = function (props) {
         />
         <button disabled={submitted}>Submit</button>
       </form>
-      <div onClick={props.handleForgotPassword}>Forgot password</div>
+    </div>
+  )
+}
+
+const CreateNewPassword = function (props) {
+  return (
+    <Formik
+      initialValues={{
+        password: '',
+        retypePassword: ''
+      }}
+      onSubmit={(values) => {
+        // TODO disable while submitting
+        console.log('ON SUBMIT')
+        props.onCreateNewPassword(values)
+      }}
+    >
+      {(props) => (
+        <Form>
+          <PasswordsMustMatch {...props} />
+          <button type="submit">Reset Password</button>
+        </Form>
+      )}
+    </Formik>
+  )
+}
+
+const SignIn = function () {
+  let [showRetypePassword, setShowRetypePassword] = useState(false)
+  let [tempPass, setTempPass] = useState({})
+  const handleTempPassword = function (tempPassInfo) {
+    console.log('HIT RETYP PASSWORD')
+    setShowRetypePassword(true)
+    setTempPass(tempPassInfo)
+  }
+  const createNewPassword = function (password) {
+    // TODO need to add in reset password API with temp
+    console.log(tempPass)
+    new UserAPI().resetPasswordWithTemp(
+      tempPass.inputInfo.email, tempPass.inputInfo.password,
+      password.password
+    ).then(resp => {
+      if (resp.success) {
+        // TODO go to user Page
+      } else {
+        // throw error and tell user to redo....
+        // passwords were incorrect
+      }
+    })
+  }
+  return (
+    <div>
+      {!showRetypePassword && 
+        <LogInWithUserInfo 
+          onTempPasswordReceived={handleTempPassword} 
+        />
+      }
+      {showRetypePassword && 
+        <CreateNewPassword onCreateNewPassword={createNewPassword} />
+      }
     </div>
   )
 }
@@ -51,7 +118,10 @@ const SignInForm = function (props) {
   return (
     <div>
       {!showForgotPassword && 
-        <SignIn handleForgotPassword={handleForgotPassword} />
+        <div>
+          <SignIn handleForgotPassword={handleForgotPassword} />
+          <div onClick={handleForgotPassword}>Forgot password</div>
+        </div>
       }
       {showForgotPassword &&
         <ForgotPassword />

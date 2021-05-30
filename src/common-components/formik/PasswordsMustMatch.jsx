@@ -17,6 +17,7 @@ const PasswordsMustMatch = function (props) {
   return (
     <div>
       <div>
+        {/* // TODO need to hide password and set type as password */}
         <label>Password:</label>
         <Field name="password"
           validate={(value) => {

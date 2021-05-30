@@ -1,5 +1,5 @@
 import {Formik, Form, Field} from 'formik'
-import PhoneNumber from '../common-components/formik/PhoneNumber'
+import PhoneNumber, {parse_Number} from '../common-components/formik/PhoneNumber'
 import PasswordMustMatchField from '../common-components/formik/PasswordsMustMatch'
 import Email from '../common-components/formik/Email'
 import * as Yup from 'yup'
@@ -10,12 +10,12 @@ const FormikUserFields = function () {
     <div>
       <Formik
         initialValues={{
-          phoneNumber: '',
-          password: '',
-          retypePassword: '',
-          email: '',
-          firstName: '',
-          lastName: ''
+          phoneNumber: '(125) - 532 - 3952',
+          password: 'password',
+          retypePassword: 'password',
+          email: 'jake@gmail.com',
+          firstName: 'jake',
+          lastName: 'cukjati'
         }}
         validationSchema={Yup.object({
           firstName: Yup.string().required('First Name is Required').min(2).max(100),
@@ -25,7 +25,15 @@ const FormikUserFields = function () {
           retypePassword: Yup.string().required().min(8).max(16)
         })}
         onSubmit={(values) => {
-          new UserAPI().createUser(values).then(resp => {
+          let apiUser = {
+            first_name: values.firstName,
+            last_name: values.lastName,
+            password: values.password,
+            phone: parse_Number(values.phoneNumber),
+            email: values.email,
+            user_id: values.email
+          }
+          new UserAPI().createUser(apiUser).then(resp => {
             const user = resp.user
             const verification = resp.verification
             // route the user to the User Page

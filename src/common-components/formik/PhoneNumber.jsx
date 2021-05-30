@@ -57,3 +57,4 @@ const PhoneNumber = function (props) {
 }
 
 export default PhoneNumber
+export {parse_Number}
