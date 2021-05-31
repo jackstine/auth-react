@@ -13,7 +13,7 @@ const validatePassword = function (value, other) {
 // if we want to change the state dynamically, 
 // please add to the name property
 const PasswordsMustMatch = function (props) {
-  let {touched, values, errors, ...rest} = props
+  let {touched, values, errors} = props
   return (
     <div>
       <div>

@@ -15,6 +15,9 @@ class UserAPI extends WebAPI {
   resetPasswordWithTemp(user_id, tempPassword, newPassword) {
     return this.__post('/password/forgot/reset', {user_id, tempPassword, newPassword})
   }
+  verifyUser(verificationCode) {
+    return this.__post('/verify', {verificationCode})
+  }
 }
 
 export default UserAPI

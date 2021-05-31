@@ -5,12 +5,17 @@ import Email from "../common-components/Fields/Email"
 import AuthAPI from '../apis/AuthAPI'
 import UserAPI from '../apis/UserAPI'
 import PasswordsMustMatch from '../common-components/formik/PasswordsMustMatch'
+import Cookies from '../store/cookies'
+import {useHistory} from 'react-router-dom'
+import {ROUTES} from '../router'
+import {UserConsumer} from '../store/contexts/UserContext'
 
 const LogInWithUserInfo = function (props) {
   let [email, setEmail] = useState('')
   let [password, setPassword] = useState('')
   let [submitted, setSubmitted] = useState(false)
   let [failedSubmit, setFailedSubmit] = useState(false)
+  let history = useHistory()
   const signUserIn = function (e) {
     setSubmitted(true)
     e.preventDefault()
@@ -24,8 +29,9 @@ const LogInWithUserInfo = function (props) {
           props.onTempPasswordReceived({inputInfo: user})
           return
         } else {
-          // TODO store the authentication token
-          // COOKIES
+          Cookies.AuthToken.set(resp.token)
+          props.user.dispatch({type:'set', state: resp.user})
+          history.push(ROUTES.USER)
         }
       }
       setSubmitted(false)
@@ -49,6 +55,10 @@ const LogInWithUserInfo = function (props) {
     </div>
   )
 }
+
+
+// LEFT OFF
+// LogInWithUserInfo.contextType = UserContext;
 
 const CreateNewPassword = function (props) {
   return (
@@ -81,6 +91,7 @@ const SignIn = function () {
     setShowRetypePassword(true)
     setTempPass(tempPassInfo)
   }
+  // TODO might need to move this to the CreateNew Password page
   const createNewPassword = function (password) {
     // TODO need to add in reset password API with temp
     console.log(tempPass)
@@ -97,16 +108,23 @@ const SignIn = function () {
     })
   }
   return (
-    <div>
-      {!showRetypePassword && 
-        <LogInWithUserInfo 
-          onTempPasswordReceived={handleTempPassword} 
-        />
-      }
-      {showRetypePassword && 
-        <CreateNewPassword onCreateNewPassword={createNewPassword} />
-      }
-    </div>
+    <UserConsumer>
+      {(user) => {
+        return (
+          <div>
+            {!showRetypePassword && 
+              <LogInWithUserInfo
+                user={user}
+                onTempPasswordReceived={handleTempPassword} 
+              />
+            }
+            {showRetypePassword && 
+              <CreateNewPassword onCreateNewPassword={createNewPassword} />
+            }
+          </div>
+        )
+      }}
+    </UserConsumer>
   )
 }
 

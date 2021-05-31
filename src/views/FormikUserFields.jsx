@@ -4,8 +4,13 @@ import PasswordMustMatchField from '../common-components/formik/PasswordsMustMat
 import Email from '../common-components/formik/Email'
 import * as Yup from 'yup'
 import UserAPI from '../apis/UserAPI'
+import Cookies from '../store/cookies'
+import {useHistory} from 'react-router-dom'
+import {ROUTES} from '../router'
+import {UserConsumer} from '../store/contexts/UserContext'
 
-const FormikUserFields = function () {
+const FormikUserFields = function (props) {
+  let history = useHistory()
   return (
     <div>
       <Formik
@@ -36,10 +41,9 @@ const FormikUserFields = function () {
           new UserAPI().createUser(apiUser).then(resp => {
             const user = resp.user
             const verification = resp.verification
-            // route the user to the User Page
-            // TODO need to create a store for the user
-            // TODO need to create a strore for the verification
-            // use React Redux for this
+            Cookies.AuthToken.set(verification)
+            props.onCreateUser(user)
+            history.push(ROUTES.USER)
           })
         }}
       >
@@ -79,4 +83,14 @@ const FormikUserFields = function () {
   )
 }
 
-export default FormikUserFields
+const ConsumedUserFields = function () {
+  return (
+    <UserConsumer>
+      {(user) => {
+        return <FormikUserFields onCreateUser={u => user.dispatch({state: u, type: 'set'})}/>
+      }}
+    </UserConsumer>
+  )
+}
+
+export default ConsumedUserFields

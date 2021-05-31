@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import SignIn from './SignIn'
 import { useHistory } from 'react-router-dom'
+import {ROUTES} from '../router'
 
 const Header = function () {
   let [showSignIn, setShowSignIn] = useState(false)
@@ -9,7 +10,7 @@ const Header = function () {
     setShowSignIn(true)
   }
   const handleSignUp = () => {
-    history.push('/user/create')
+    history.push(ROUTES.CREATE_USER)
   }
   return (
     <div>

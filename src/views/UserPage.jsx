@@ -1,6 +1,21 @@
+import {UserConsumer} from '../store/contexts/UserContext'
+
+const UserP = function (props) {
+  let user = props.user.state
+  return (
+    <div>
+      <h1>{`Hello ${user.first_name} ${user.last_name}`}</h1>
+  </div>
+  )
+}
+
 const UserPage = function () {
   return (
-    <h1>User Page</h1>
+    <UserConsumer>
+      {(user) => {
+        return <UserP user={user}/>
+      }}
+    </UserConsumer>
   )
 }
 
