@@ -5,13 +5,14 @@ const parse_Number = value => {
 	if (!value) {
 		return value;
   }
-  value = value.replace(/[()-]/g,'')
+  value = value.toString().replace(/[()-]/g,'')
   let num = Number(value.replace(/[^\d]/g, ''));
   return num === 0 ? undefined : num
 }
 
 const format_Phone = e => {
-  let value = e.target.value
+  let isEvent = (e?.target?.value)
+  let value = isEvent ? e.target.value : e
   let newValue = ''
 	if (value) {
     value = parse_Number(value)
@@ -26,8 +27,12 @@ const format_Phone = e => {
       }
     }
   }
-  e.target.value = newValue
-  return e
+  if (isEvent) {
+    e.target.value = newValue
+    return e
+  } else {
+    return newValue
+  }
 }
 
 const validateNumber = function (value) {
@@ -57,4 +62,4 @@ const PhoneNumber = function (props) {
 }
 
 export default PhoneNumber
-export {parse_Number}
+export {parse_Number, format_Phone}

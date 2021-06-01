@@ -5,7 +5,7 @@ class Cookie {
     this.name = name
   }
   get() {
-    jsCookie.get(this.name)
+    return JSON.parse(jsCookie.get(this.name)).token
   }
   set(value) {
     jsCookie.set(this.name, value)

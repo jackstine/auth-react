@@ -17,9 +17,9 @@ const PasswordsMustMatch = function (props) {
   return (
     <div>
       <div>
-        {/* // TODO need to hide password and set type as password */}
         <label>Password:</label>
         <Field name="password"
+          type="password"
           validate={(value) => {
             return validatePassword(value, props.values.retypePassword)
           }}
@@ -28,6 +28,7 @@ const PasswordsMustMatch = function (props) {
       <div>
         <label>Retype Password:</label>
         <Field name="retypePassword" 
+          type="password"
           validate={(value) => {
             return validatePassword(value, props.values.password)
           }}

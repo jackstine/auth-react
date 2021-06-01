@@ -56,11 +56,22 @@ const LogInWithUserInfo = function (props) {
   )
 }
 
-
-// LEFT OFF
-// LogInWithUserInfo.contextType = UserContext;
-
 const CreateNewPassword = function (props) {
+  let history = useHistory()
+  const onCreateNewPassword = function (password) {
+    new UserAPI().resetPasswordWithTemp(
+      props.tempPass.inputInfo.email, props.tempPass.inputInfo.password,
+      password.password
+    ).then(resp => {
+      if (resp.success) {
+        Cookies.AuthToken.set(resp.token)
+        history.push(ROUTES.USER)
+        props.user.dispatch({type: 'set', state: resp.user})
+      } else {
+
+      }
+    })
+  }
   return (
     <Formik
       initialValues={{
@@ -68,15 +79,13 @@ const CreateNewPassword = function (props) {
         retypePassword: ''
       }}
       onSubmit={(values) => {
-        // TODO disable while submitting
-        console.log('ON SUBMIT')
-        props.onCreateNewPassword(values)
+        onCreateNewPassword(values)
       }}
     >
       {(props) => (
         <Form>
           <PasswordsMustMatch {...props} />
-          <button type="submit">Reset Password</button>
+          <button disabled={props.isSubmitting} type="submit">Reset Password</button>
         </Form>
       )}
     </Formik>
@@ -91,22 +100,6 @@ const SignIn = function () {
     setShowRetypePassword(true)
     setTempPass(tempPassInfo)
   }
-  // TODO might need to move this to the CreateNew Password page
-  const createNewPassword = function (password) {
-    // TODO need to add in reset password API with temp
-    console.log(tempPass)
-    new UserAPI().resetPasswordWithTemp(
-      tempPass.inputInfo.email, tempPass.inputInfo.password,
-      password.password
-    ).then(resp => {
-      if (resp.success) {
-        // TODO go to user Page
-      } else {
-        // throw error and tell user to redo....
-        // passwords were incorrect
-      }
-    })
-  }
   return (
     <UserConsumer>
       {(user) => {
@@ -119,7 +112,7 @@ const SignIn = function () {
               />
             }
             {showRetypePassword && 
-              <CreateNewPassword onCreateNewPassword={createNewPassword} />
+              <CreateNewPassword tempPass={tempPass} user={user} />
             }
           </div>
         )

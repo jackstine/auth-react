@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import {useLocation} from 'react-router-dom'
+import {useLocation, Link} from 'react-router-dom'
 import {capitalize} from '../common/U_F'
 import UserAPI from '../apis/UserAPI'
 import { useState } from 'react'
+import {ROUTES} from '../router'
 
 const VerifyUserView = function () {
   let location = useLocation()
@@ -18,11 +19,11 @@ const VerifyUserView = function () {
       }
     })
   }, [verificationCode])
-  let Message = <h1>`Thank you ${firstName} ${lastName}, you have been verified!`</h1>
-  // TODO add a link to Log Into the application
+  let Message = <h1>{`Thank you ${firstName} ${lastName}, you have been verified!`}</h1>
   return (
     <div>
       {userHasBeenVerified && Message }
+      <Link to={ROUTES.HOME}>Go to Home</Link>
     </div>
   )
 }

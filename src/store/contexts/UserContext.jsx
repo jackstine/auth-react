@@ -2,11 +2,12 @@ import {createContext, useReducer} from 'react'
 const UserContext = createContext()
 
 const userReducer = function (state, action) {
-  console.log({action})
   switch (action.type) {
-    case 'set': {
-      debugger
+    case 'set': {      
       return {...action.state}
+    }
+    case 'update': {
+      return {...state, ...action.state}
     }
     default: {
       return state

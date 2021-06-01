@@ -29,8 +29,6 @@ const PhoneNumber = (props) => {
       onChange(enteredPhoneNumber)
     }
   }
-  // TODO cursor position only valid if less then length of 10
-  // cursor position only works first character change
 	return (
     <div>
       <label>Phone Number</label>
