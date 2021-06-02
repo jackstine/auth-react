@@ -6,7 +6,7 @@ class UserAPI extends WebAPI {
     super({endpoint: config.API + '/user'})
   }
   createUser(user) {
-    return this.__post(undefined, {user}, {auth:false})
+    return this.__post('', {user}, {auth:false})
   }
   forgotPassword(email) {
     return this.__post('/password/forgot', {email}, {auth:false})
@@ -18,7 +18,7 @@ class UserAPI extends WebAPI {
     return this.__post('/verify', {verificationCode}, {auth:false})
   }
   updateUser(user) {
-    return this.__put(undefined, {user})
+    return this.__put('', {user})
   }
 }
 

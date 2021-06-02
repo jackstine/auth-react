@@ -1,31 +1,42 @@
-import {useState} from 'react'
-import SignIn from './SignIn'
-import { useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import {ROUTES} from '../router'
+import {AppBar, Toolbar, Button, Typography, IconButton} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 
-const Header = function () {
-  let [showSignIn, setShowSignIn] = useState(false)
-  let history = useHistory()
-  const handleSignIn = () => {
-    setShowSignIn(true)
-  }
-  const handleSignUp = () => {
-    history.push(ROUTES.CREATE_USER)
-  }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
+const Header = function ({children}) {
+  let classes = useStyles()
   return (
-    <div>
-      {!showSignIn &&
-        <div onClick={handleSignIn}>
-          SIGN IN
-        </div>
-      }
-      {
-        <div onClick={handleSignUp}>
-          SIGN UP
-        </div>
-      }
-      {showSignIn && <SignIn />}
-    </div>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Button className={classes.menuButton} color="inherit">
+            <NavLink to={ROUTES.LOGIN}>Login</NavLink>
+          </Button>
+          <Button className={classes.menuButton} color="inherit">
+            <NavLink to={ROUTES.SIGN_UP}>Sign Up</NavLink>
+          </Button>
+          <Typography className={classes.title} variant="h6">
+            About Us
+          </Typography>
+          <Typography className={classes.title} variant="h6">
+            Entertainment
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      {children}
+    </>
   )
 }
 

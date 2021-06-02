@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* This was made to make all button links and keep 
+the text from Material UI */
+button > span.MuiButton-label > a {
+  text-decoration: none;
+  color: inherit;
+}

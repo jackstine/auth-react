@@ -4,26 +4,38 @@ import UserAPI from '../apis/UserAPI'
 
 const ForgotPassword = function (props) {
   let [email, setEmail] = useState('')
-  let [sentHandler, setSentHandler] = useState('')
+  let [submitting, setSubmitting] = useState(false)
+  let [requestSent, setRequestSent] = useState(false)
+  let [failed, setFailed] = useState(false)
   let handleSubmit = function (e) {
-    setSentHandler(true)
+    setSubmitting(true)
     e.preventDefault()
     new UserAPI().forgotPassword(email).then(resp => {
+      if (resp) {
+        setRequestSent(true)
+      } else {
+        setSubmitting(false)
+        setFailed(true)
+      }
+    }).catch(err => {
+      setSubmitting(false)
     })
   }
   let emailSubmitted = `An email has been sent to ${email}`
+  let FailedSubmit = `The email you have used does not exist`
   return (
     <div>
-      {!sentHandler &&
+      {!requestSent &&
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
           <Email id="email" name="email"
             value={email} onChange={setEmail}
           />
-          <button disabled={sentHandler}>Forgot Password</button>
+          {failed && <div>{FailedSubmit}</div>}
+          <button disabled={submitting}>Forgot Password</button>
         </form>
       }
-      {sentHandler &&
+      {requestSent &&
         emailSubmitted
       }
     </div>

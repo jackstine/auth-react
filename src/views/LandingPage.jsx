@@ -1,5 +1,12 @@
+import Header from '../components/Header'
+
 const LandingPage = function () {
-  return (<h1>HELLO</h1>)
+  return (
+    <>
+      <Header/>
+      <h1>Landing Page</h1>
+    </>
+  )
 }
 
 export default LandingPage
