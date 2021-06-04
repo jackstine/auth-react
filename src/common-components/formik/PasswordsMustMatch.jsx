@@ -1,4 +1,5 @@
 import {Field} from 'formik'
+import TexBox from '../Fields/TextBox'
 
 const validatePassword = function (value, other) {
   console.log(value, other)
@@ -17,18 +18,16 @@ const PasswordsMustMatch = function (props) {
   return (
     <div>
       <div>
-        <label>Password:</label>
-        <Field name="password"
-          type="password"
+        <TexBox name="password" type="password"
+          label="Password"
           validate={(value) => {
             return validatePassword(value, props.values.retypePassword)
           }}
         />
       </div>
       <div>
-        <label>Retype Password:</label>
-        <Field name="retypePassword" 
-          type="password"
+        <TexBox name="retypePassword" type="password"
+          label="Retype Password"
           validate={(value) => {
             return validatePassword(value, props.values.password)
           }}

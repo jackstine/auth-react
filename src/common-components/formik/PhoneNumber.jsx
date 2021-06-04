@@ -1,5 +1,6 @@
 import {Field} from 'formik'
 import * as Yup from 'yup'
+import TextBox from '../Fields/TextBox'
 
 const parse_Number = value => {
 	if (!value) {
@@ -47,13 +48,11 @@ const validateNumber = function (value) {
 
 
 const PhoneNumber = function (props) {
-  let {handleChange, label, ...rest} = props
+  let {handleChange, ...rest} = props
   return (
     <div>
-      <label>{label}</label>
-      <Field
+      <TextBox
         validate={validateNumber}
-        type="text"
         onChange={e => handleChange(format_Phone(e))} 
         {...rest}
       />

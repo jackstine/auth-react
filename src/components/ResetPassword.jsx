@@ -2,7 +2,6 @@ import { useState } from 'react'
 import PasswordMustMatchField from '../common-components/Fields/PasswordsMustMatch'
 
 
-
 const ResetPassword = function (props) {
   let [password, setPassword] = useState('')
   let [submitted, setSubmitting] = useState(false)

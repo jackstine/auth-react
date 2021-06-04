@@ -1,4 +1,4 @@
-import {Formik, Form, Field} from 'formik'
+import {Formik, Form} from 'formik'
 import PhoneNumber, {parse_Number} from '../common-components/formik/PhoneNumber'
 import PasswordMustMatchField from '../common-components/formik/PasswordsMustMatch'
 import Email from '../common-components/formik/Email'
@@ -8,6 +8,9 @@ import Cookies from '../store/cookies'
 import {useHistory} from 'react-router-dom'
 import {ROUTES} from '../router'
 import {UserConsumer} from '../store/contexts/UserContext'
+import { useState } from 'react'
+import TextBox from '../common-components/Fields/TextBox'
+import SubmitButton from '../common-components/buttons/SubmitButton'
 
 let DEFAULT_VALUES = {
   phoneNumber: '(125) - 532 - 3952',
@@ -18,13 +21,24 @@ let DEFAULT_VALUES = {
   lastName: 'cukjati'
 }
 
+let DEFAULT_VALUES2 = {
+  phoneNumber: '',
+  password: '',
+  retypePassword: '',
+  email: '',
+  firstName: '',
+  lastName: ''
+}
+
 const FormikUserFields = function (formikProps) {
   let history = useHistory()
+  let [showError, setShowError] = useState()
+  let errorMessage = <div style={{"color": "red"}}>There was an error submitting your request</div>
   return (
     <div>
       <Formik
         // ADD need to reset the values
-        initialValues={DEFAULT_VALUES}
+        initialValues={DEFAULT_VALUES2}
         validationSchema={Yup.object({
           firstName: Yup.string().required('First Name is Required').min(2).max(100),
           lastName: Yup.string().required('Last Name is Required').min(2).max(100),
@@ -32,7 +46,7 @@ const FormikUserFields = function (formikProps) {
           password: Yup.string().required('Password is Required').min(8).max(16),
           retypePassword: Yup.string().required().min(8).max(16)
         })}
-        onSubmit={(values) => {
+        onSubmit={(values, actions) => {
           let apiUser = {
             first_name: values.firstName,
             last_name: values.lastName,
@@ -42,26 +56,27 @@ const FormikUserFields = function (formikProps) {
             user_id: values.email
           }
           new UserAPI().createUser(apiUser).then(resp => {
-            const user = resp.user
-            Cookies.AuthToken.set(resp.token)
-            formikProps.onCreateUser(user)
-            history.push(ROUTES.USER)
+            if (resp.user) {
+              const user = resp.user
+              Cookies.AuthToken.set(resp.token)
+              formikProps.onCreateUser(user)
+              history.push(ROUTES.USER)
+            } else {
+              setShowError(true)
+              actions.setSubmitting(false)
+            }
           })
         }}
       >
         {props => (
           <Form>
             <div>
-              <label>First Name</label>
-              <Field name="firstName"/>
-            </div>
-            <div>
-              <label>Last Name</label>
-              <Field name="lastName"/>
+              <TextBox name="firstName" label="First Name"/>
+              <TextBox name="lastName" label="Last Name"/>
             </div>
             <div> 
               {/* Cannot change */}
-              <Email name="email" />
+              <Email label="Email" name="email" />
             </div>
             <PhoneNumber 
               label="Phone Number:"
@@ -69,7 +84,8 @@ const FormikUserFields = function (formikProps) {
               name="phoneNumber"
             />
             <PasswordMustMatchField {...props} />
-            <button disabled={props.isSubmitting} type="submit">Submit</button>
+            {showError && errorMessage}
+            <SubmitButton disabled={props.isSubmitting} />
           </Form>
         )}
       </Formik>

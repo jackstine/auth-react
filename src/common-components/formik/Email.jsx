@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import {Field} from 'formik'
+import TextBox from '../Fields/TextBox'
 
 const validateEmail = function (value) {
   let schema = Yup.string().email()
@@ -13,10 +14,7 @@ const validateEmail = function (value) {
 const Email = function (props) {
   return (
     <div>
-      <label htmlFor={props.name}>Email</label>
-      <Field validate={validateEmail}
-        type="email"
-        {...props}
+      <TextBox validate={validateEmail} {...props} type="email"
       />
     </div>
   )

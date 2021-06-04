@@ -1,18 +1,16 @@
 import { useState } from "react"
 import ForgotPassword from "../components/ForgotPassword"
 import {UserConsumer} from '../store/contexts/UserContext'
-import LogInWithUserInfo from '../components/user/LogInWithUserInfo'
-import CreateNewPassword from '../components/user/CreateNewPassword'
+import LogInWithUserInfo from '../components/login/LogInWithUserInfo'
+import CreateNewPassword from '../components/login/CreateNewPassword'
 
 const SignIn = function () {
   let [showRetypePassword, setShowRetypePassword] = useState(false)
   let [tempPass, setTempPass] = useState({})
   const handleTempPassword = function (tempPassInfo) {
-    console.log('HIT RETYP PASSWORD')
     setShowRetypePassword(true)
     setTempPass(tempPassInfo)
   }
-  console.log('I AM SHOWING')
   return (
     <UserConsumer>
       {(user) => {

@@ -18,3 +18,12 @@ button > span.MuiButton-label > a {
   text-decoration: none;
   color: inherit;
 }
+
+/* These were added for TextBox outlined in Marteral UI */
+/* .MuiOutlinedInput-notchedOutline {
+  border-color: white !important;
+}
+
+.MuiFormLabel-root {
+  color: inherit !important;
+} */
