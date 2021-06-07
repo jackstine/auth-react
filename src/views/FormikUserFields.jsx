@@ -11,15 +11,16 @@ import {UserConsumer} from '../store/contexts/UserContext'
 import { useState } from 'react'
 import TextBox from '../common-components/Fields/TextBox'
 import SubmitButton from '../common-components/buttons/SubmitButton'
+import GoogleLogin from '../components/GoogleLogin'
 
-let DEFAULT_VALUES = {
-  phoneNumber: '(125) - 532 - 3952',
-  password: 'password',
-  retypePassword: 'password',
-  email: 'jake@gmail.com',
-  firstName: 'jake',
-  lastName: 'cukjati'
-}
+// let DEFAULT_VALUES = {
+//   phoneNumber: '(125) - 532 - 3952',
+//   password: 'password',
+//   retypePassword: 'password',
+//   email: 'jake@gmail.com',
+//   firstName: 'jake',
+//   lastName: 'cukjati'
+// }
 
 let DEFAULT_VALUES2 = {
   phoneNumber: '',
@@ -36,6 +37,7 @@ const FormikUserFields = function (formikProps) {
   let errorMessage = <div style={{"color": "red"}}>There was an error submitting your request</div>
   return (
     <div>
+      <GoogleLogin onCreateUser={formikProps.onCreateUser}/>
       <Formik
         // ADD need to reset the values
         initialValues={DEFAULT_VALUES2}

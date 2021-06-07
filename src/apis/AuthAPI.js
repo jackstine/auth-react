@@ -9,6 +9,10 @@ class AuthAPI extends WebAPI {
   login(user) {
     return this.__post('/login', {user}, {auth:false})
   }
+
+  googleSignIn(token) {
+    return this.__post('/google',{token}, {auth: false})
+  }
 }
 
 export default AuthAPI

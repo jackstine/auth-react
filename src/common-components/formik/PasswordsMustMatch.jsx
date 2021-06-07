@@ -1,4 +1,3 @@
-import {Field} from 'formik'
 import TexBox from '../Fields/TextBox'
 
 const validatePassword = function (value, other) {
