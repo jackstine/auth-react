@@ -13,23 +13,23 @@ import TextBox from '../common-components/Fields/TextBox'
 import SubmitButton from '../common-components/buttons/SubmitButton'
 import GoogleLogin from '../components/GoogleLogin'
 
-// let DEFAULT_VALUES = {
-//   phoneNumber: '(125) - 532 - 3952',
-//   password: 'password',
-//   retypePassword: 'password',
-//   email: 'jake@gmail.com',
-//   firstName: 'jake',
-//   lastName: 'cukjati'
-// }
-
-let DEFAULT_VALUES2 = {
-  phoneNumber: '',
-  password: '',
-  retypePassword: '',
-  email: '',
-  firstName: '',
-  lastName: ''
+let DEFAULT_VALUES = {
+  phoneNumber: '(125) - 532 - 3952',
+  password: 'password',
+  retypePassword: 'password',
+  email: 'jake@gmail.com',
+  firstName: 'jake',
+  lastName: 'cukjati'
 }
+
+// let DEFAULT_VALUES2 = {
+//   phoneNumber: '',
+//   password: '',
+//   retypePassword: '',
+//   email: '',
+//   firstName: '',
+//   lastName: ''
+// }
 
 const FormikUserFields = function (formikProps) {
   let history = useHistory()
@@ -40,7 +40,7 @@ const FormikUserFields = function (formikProps) {
       <GoogleLogin onCreateUser={formikProps.onCreateUser}/>
       <Formik
         // ADD need to reset the values
-        initialValues={DEFAULT_VALUES2}
+        initialValues={DEFAULT_VALUES}
         validationSchema={Yup.object({
           firstName: Yup.string().required('First Name is Required').min(2).max(100),
           lastName: Yup.string().required('Last Name is Required').min(2).max(100),

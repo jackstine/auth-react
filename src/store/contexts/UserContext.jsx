@@ -1,12 +1,18 @@
 import {createContext, useReducer} from 'react'
 const UserContext = createContext()
 
+let ACTIONS = {
+  SET: 'set',
+  UPDATE: 'update'
+}
+
+// TODO need to create constants
 const userReducer = function (state, action) {
   switch (action.type) {
-    case 'set': {      
+    case ACTIONS.SET: {      
       return {...action.state}
     }
-    case 'update': {
+    case ACTIONS.UPDATE: {
       return {...state, ...action.state}
     }
     default: {
@@ -32,4 +38,12 @@ const UserConsumer = function ({children}) {
   </UserContext.Consumer>)
 }
 
-export {UserProvider, UserContext, UserConsumer}
+const UserHOC = function (Component, props) {
+  return (propsToAdd) => (<UserContext.Consumer>
+    {context => (
+      <Component user={context} {...propsToAdd} {...props}/>
+    )}
+  </UserContext.Consumer>)
+}
+
+export {UserProvider, UserContext, UserConsumer, UserHOC, ACTIONS}

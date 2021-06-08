@@ -5,7 +5,12 @@ class Cookie {
     this.name = name
   }
   get() {
-    return JSON.parse(jsCookie.get(this.name)).token
+    let cookieValue = jsCookie.get(this.name)
+    if (cookieValue) {
+      return JSON.parse(cookieValue).token
+    } else {
+      return null
+    }
   }
   set(value) {
     jsCookie.set(this.name, value)
