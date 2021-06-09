@@ -3,7 +3,7 @@ import TextBox from '../common-components/Fields/TextBox'
 import SubmitButton from '../common-components/buttons/SubmitButton'
 import CustomerAPI from '../apis/CustomerAPI'
 import {UserHOC} from '../store/contexts/UserContext'
-import {SubHOC} from '../store/contexts/SubscriptionContext'
+import {SubHOC, SUB_ACTIONS} from '../store/contexts/SubscriptionContext'
 
 const DEFAULT_CUSTOMER_VALUES = {
   city: 'Atlanta',
@@ -20,10 +20,14 @@ const CustomerForm = function (props) {
     onSubmit={(values, actions) => {
       let user = props.user.state
       let price = props.sub.state.price
-      console.log(user, price, values)
-      // if (user) {
-      //   new CustomerAPI().authorizeCreateCustomer(user, {billing: values}, null)
-      // }
+      let subDispatch = props.sub.dispatch
+      if (user) {
+        let api = new CustomerAPI()
+        api.authorizeCreateCustomer(user, {billing: values}, price).then(customerSub => {
+          subDispatch({state: {...customerSub}, action: SUB_ACTIONS.SUBSCRIPE_CUSTOMER})
+          // currently this will automatically switch over to the Payment Method
+        })
+      }
     }}
     >
       {(formikProps) => (

@@ -1,7 +1,6 @@
 import TexBox from '../Fields/TextBox'
 
 const validatePassword = function (value, other) {
-  console.log(value, other)
   if (value === other) {
     return null
   } else {

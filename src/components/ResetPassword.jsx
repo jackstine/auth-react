@@ -9,7 +9,6 @@ const ResetPassword = function (props) {
   const handleSubmit = function (e) {
     setSubmitting(true)
     e.preventDefault()
-    console.log(password)
   }
   return (
     <form onSubmit={handleSubmit}>

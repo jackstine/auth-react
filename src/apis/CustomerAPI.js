@@ -18,6 +18,10 @@ class CustomerAPI extends WebAPI {
   authorizeCreateCustomer (user, customer, price) {
     return this.__post('/authorize/customer', {user, customer, price})
   }
+
+  authorizeSale (sub, paymentMethod) {
+    return this.__post('/authorize/sale', {sub, paymentMethod})
+  }
 }
 
 export default CustomerAPI

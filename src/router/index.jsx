@@ -10,7 +10,7 @@ import LandingPage from '../views/LandingPage'
 import UserPage from '../views/UserPage'
 import VerifyUserView from "../views/VerifyUserView";
 import DevPage from '../views/DevPage'
-import CustomerForm from '../components/CustomerForm'
+import CustomerProfile from '../views/CustomerProfile'
 
 const ROUTES = {
   LANDING: '/',
@@ -34,7 +34,7 @@ const Router = function () {
           <Route strict path={ROUTES.HOME} component={Home}/>
           <Route strict path={ROUTES.USER} component={UserPage} />
           <Route exact path={ROUTES.VERIFY} component={VerifyUserView} />
-          <Route exact path={ROUTES.CUSTOMER_PROFILE} component={CustomerForm} />
+          <Route exact path={ROUTES.CUSTOMER_PROFILE} component={CustomerProfile} />
           <Route exact path={ROUTES.DEV_} component={DevPage} />
         </Switch>
       </BrowserRouter>

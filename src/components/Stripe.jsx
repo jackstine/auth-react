@@ -6,6 +6,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 import config from '../config'
+import CustomerAPI from '../apis/CustomerAPI'
 
 /**
  * 1. User selects the plan that they want
@@ -20,22 +21,23 @@ import config from '../config'
  * @returns 
  */
 
-const CheckoutForm = () => {
+ const stripePromise = loadStripe(config.stripKey);
+
+const CardLayout = (props) => {
   const stripe = useStripe();
   const elements = useElements();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let clientSecret = '' //
-    stripe.confirmCardPayment(clientSecret, {
+    let cardElement = elements.getElement(CardElement)
+    stripe.createPaymentMethod({
+      type: 'card',
       card: elements.getElement(CardElement),
-      billing_details: {
-        name: ''
-      }
+    }).then(paymentMethod => {
+      let sub = props.sub
+      new CustomerAPI().authorizeSale(sub, paymentMethod).then(resp => {
+        console.log(resp) // OUT
+      })
     })
-    let paymentMethod = '' //
-    let error = '' //
-    console.log(error, paymentMethod)
   };
 
   return (
@@ -48,14 +50,15 @@ const CheckoutForm = () => {
   );
 };
 
-const stripePromise = loadStripe(config.stripKey);
+const StripeComponent = function (props) {
+  return (
+    <div>
+      <Elements stripe={stripePromise}>
+        <CardLayout {...props}/>
+      </Elements>
+    </div>
+  )
+}
 
-const StripeComponent = () => (
-  <div>
-    <Elements stripe={stripePromise}>
-      <CheckoutForm />
-    </Elements>
-  </div>
-);
 
 export default StripeComponent
