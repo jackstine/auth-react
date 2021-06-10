@@ -8,7 +8,7 @@ const PaymentMethod = function (props) {
   return (
     <div>
       <h1>Payment Method</h1>
-      <Stripe fullName={`${user.first_name} ${user.last_name}`} sub={sub}/>
+      <Stripe fullName={`${user.first_name} ${user.last_name}`} sub={sub} customer={props.sub.state.customer}/>
     </div>
   )
 }

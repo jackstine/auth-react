@@ -8,12 +8,15 @@ let ACTIONS = {
 
 // TODO need to create constants
 const userReducer = function (state, action) {
+  if (!action.type && !action.state) {
+    throw Error('no type or state for userReducer')
+  }
   switch (action.type) {
     case ACTIONS.SET: {      
       return {...action.state}
     }
     case ACTIONS.UPDATE: {
-      return {...state, ...action.state}
+      return {...state.state, ...action.state}
     }
     default: {
       return state

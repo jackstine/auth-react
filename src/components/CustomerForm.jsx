@@ -20,13 +20,16 @@ const CustomerForm = function (props) {
     onSubmit={(values, actions) => {
       let user = props.user.state
       let price = props.sub.state.price
-      let subDispatch = props.sub.dispatch
       if (user) {
         let api = new CustomerAPI()
         api.authorizeCreateCustomer(user, {billing: values}, price).then(customerSub => {
-          subDispatch({state: {...customerSub}, action: SUB_ACTIONS.SUBSCRIPE_CUSTOMER})
+          props.sub.dispatch({
+            state: {customer: customerSub.customer, sub: customerSub.subscription},
+            type: SUB_ACTIONS.SUBSCRIPE_CUSTOMER
+          })
+          props.authorizedCustomer()
           // currently this will automatically switch over to the Payment Method
-        })
+        }).catch(console.error)
       }
     }}
     >

@@ -16,17 +16,20 @@ let SUB_ACTIONS = {
  * @returns 
  */
 const subReducer = function (state, action) {
+  if (!action.type && !action.state) {
+    throw Error('no type or state for subReducer')
+  }
   switch (action.type) {
     case SUB_ACTIONS.ADD_PRICE: {      
-      return {...state, price: action.state.price}
+      return {...state.state, price: action.state.price}
     }
     case SUB_ACTIONS.SUBSCRIPE_CUSTOMER_WITH_PRICE: {
       // should change everything
-      return {...state, ...action.state}
+      return {...state.state, ...action.state}
     }
     case SUB_ACTIONS.SUBSCRIPE_CUSTOMER: {
       // replaces customer and subscription
-      return {...state, ...action.state}
+      return {...state.state, ...action.state}
     }
     default: {
       return state

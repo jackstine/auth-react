@@ -19,8 +19,8 @@ class CustomerAPI extends WebAPI {
     return this.__post('/authorize/customer', {user, customer, price})
   }
 
-  authorizeSale (sub, paymentMethod) {
-    return this.__post('/authorize/sale', {sub, paymentMethod})
+  authorizeSale (sub, paymentMethod, customer) {
+    return this.__post('/authorize/sale', {sub, paymentMethod, customer})
   }
 }
 

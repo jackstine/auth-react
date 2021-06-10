@@ -28,15 +28,15 @@ const CardLayout = (props) => {
   const elements = useElements();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let cardElement = elements.getElement(CardElement)
-    stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-    }).then(paymentMethod => {
-      let sub = props.sub
-      new CustomerAPI().authorizeSale(sub, paymentMethod).then(resp => {
-        console.log(resp) // OUT
-      })
+    stripe.confirmCardPayment(props.sub.latest_invoice.payment_intent.client_secret,{
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: props.fullName,
+        }
+      }
+    }).then(resp => {
+      console.log(resp)
     })
   };
 
@@ -50,6 +50,12 @@ const CardLayout = (props) => {
   );
 };
 
+/**
+ * 
+ * @param {sub} props 
+ * @param {fullName}
+ * @returns 
+ */
 const StripeComponent = function (props) {
   return (
     <div>
