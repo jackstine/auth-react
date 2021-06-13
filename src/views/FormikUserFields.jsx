@@ -1,26 +1,26 @@
-import {Formik, Form} from 'formik'
-import PhoneNumber, {parse_Number} from '../common-components/formik/PhoneNumber'
-import PasswordMustMatchField from '../common-components/formik/PasswordsMustMatch'
-import Email from '../common-components/formik/Email'
-import * as Yup from 'yup'
-import UserAPI from '../apis/UserAPI'
-import Cookies from '../store/cookies'
-import {useHistory} from 'react-router-dom'
-import {ROUTES} from '../router'
-import {UserConsumer} from '../store/contexts/UserContext'
-import { useState } from 'react'
-import TextBox from '../common-components/Fields/TextBox'
-import SubmitButton from '../common-components/buttons/SubmitButton'
-import GoogleLogin from '../components/GoogleLogin'
+import { Formik, Form } from "formik";
+import PhoneNumber, { parse_Number } from "../common-components/formik/PhoneNumber";
+import PasswordMustMatchField from "../common-components/formik/PasswordsMustMatch";
+import Email from "../common-components/formik/Email";
+import * as Yup from "yup";
+import UserAPI from "../apis/UserAPI";
+import Cookies from "../store/cookies";
+import { useHistory } from "react-router-dom";
+import { ROUTES } from "../router";
+import { UserConsumer } from "../store/contexts/UserContext";
+import { useState } from "react";
+import TextBox from "../common-components/Fields/TextBox";
+import SubmitButton from "../common-components/buttons/SubmitButton";
+import GoogleLogin from "../components/GoogleLogin";
 
 let DEFAULT_VALUES = {
-  phoneNumber: '(125) - 532 - 3952',
-  password: 'password',
-  retypePassword: 'password',
-  email: 'jake@gmail.com',
-  firstName: 'jake',
-  lastName: 'cukjati'
-}
+  phoneNumber: "(125) - 532 - 3952",
+  password: "password",
+  retypePassword: "password",
+  email: "ecstaticjack@gmail.com",
+  firstName: "jake",
+  lastName: "cukjati",
+};
 
 // let DEFAULT_VALUES2 = {
 //   phoneNumber: '',
@@ -32,21 +32,21 @@ let DEFAULT_VALUES = {
 // }
 
 const FormikUserFields = function (formikProps) {
-  let history = useHistory()
-  let [showError, setShowError] = useState()
-  let errorMessage = <div style={{"color": "red"}}>There was an error submitting your request</div>
+  let history = useHistory();
+  let [showError, setShowError] = useState();
+  let errorMessage = <div style={{ color: "red" }}>There was an error submitting your request</div>;
   return (
     <div>
-      <GoogleLogin onCreateUser={formikProps.onCreateUser}/>
+      <GoogleLogin onCreateUser={formikProps.onCreateUser} />
       <Formik
         // ADD need to reset the values
         initialValues={DEFAULT_VALUES}
         validationSchema={Yup.object({
-          firstName: Yup.string().required('First Name is Required').min(2).max(100),
-          lastName: Yup.string().required('Last Name is Required').min(2).max(100),
-          phoneNumber: Yup.string().required('Phone Number is Required'),
-          password: Yup.string().required('Password is Required').min(8).max(16),
-          retypePassword: Yup.string().required().min(8).max(16)
+          firstName: Yup.string().required("First Name is Required").min(2).max(100),
+          lastName: Yup.string().required("Last Name is Required").min(2).max(100),
+          phoneNumber: Yup.string().required("Phone Number is Required"),
+          password: Yup.string().required("Password is Required").min(8).max(16),
+          retypePassword: Yup.string().required().min(8).max(16),
         })}
         onSubmit={(values, actions) => {
           let apiUser = {
@@ -55,32 +55,31 @@ const FormikUserFields = function (formikProps) {
             password: values.password,
             phone: parse_Number(values.phoneNumber),
             email: values.email,
-            user_id: values.email
-          }
-          new UserAPI().createUser(apiUser).then(resp => {
+          };
+          new UserAPI().createUser(apiUser).then((resp) => {
             if (resp.user) {
-              const user = resp.user
-              Cookies.AuthToken.set(resp.token)
-              formikProps.onCreateUser(user)
-              history.push(ROUTES.USER)
+              const user = resp.user;
+              Cookies.AuthToken.set(resp.token);
+              formikProps.onCreateUser(user);
+              history.push(ROUTES.USER);
             } else {
-              setShowError(true)
-              actions.setSubmitting(false)
+              setShowError(true);
+              actions.setSubmitting(false);
             }
-          })
+          });
         }}
       >
-        {props => (
+        {(props) => (
           <Form>
             <div>
-              <TextBox name="firstName" label="First Name"/>
-              <TextBox name="lastName" label="Last Name"/>
+              <TextBox name="firstName" label="First Name" />
+              <TextBox name="lastName" label="Last Name" />
             </div>
-            <div> 
+            <div>
               {/* Cannot change */}
               <Email label="Email" name="email" />
             </div>
-            <PhoneNumber 
+            <PhoneNumber
               label="Phone Number:"
               handleChange={props.handleChange}
               name="phoneNumber"
@@ -92,17 +91,17 @@ const FormikUserFields = function (formikProps) {
         )}
       </Formik>
     </div>
-  )
-}
+  );
+};
 
 const ConsumedUserFields = function () {
   return (
     <UserConsumer>
       {(user) => {
-        return <FormikUserFields onCreateUser={u => user.dispatch({state: u, type: 'set'})}/>
+        return <FormikUserFields onCreateUser={(u) => user.dispatch({ state: u, type: "set" })} />;
       }}
     </UserConsumer>
-  )
-}
+  );
+};
 
-export default ConsumedUserFields
+export default ConsumedUserFields;

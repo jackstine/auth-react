@@ -11,6 +11,12 @@ class WebAPI {
     return this.__fetch(url, data, options);
   }
 
+  async __delete(url, data, options) {
+    options = options ?? {};
+    options.method = "DELETE";
+    return this.__fetch(url, data, options);
+  }
+
   async __put(url, data, options) {
     options = options ?? {};
     options.method = "PUT";
@@ -47,18 +53,16 @@ class WebAPI {
       requestOptions.body = JSON.stringify(data); // body data type must match "Content-Type" header
     } else {
       if (data) {
-        console.log(data);
         calling = `${calling}?${Object.keys(data)
           .map((key) => `${key}=${data[key]}`)
           .join("&")}`;
       }
     }
-    console.log(calling);
     const response = await fetch(calling, requestOptions);
     if (response.status === 200) {
       return response.json(); // parses JSON response into native JavaScript objects
     } else {
-      return response.text();
+      throw response;
     }
   }
 }

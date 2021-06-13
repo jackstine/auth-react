@@ -30,6 +30,14 @@ class CustomerAPI extends WebAPI {
   getSources(customer) {
     return this.__get("/source", { id: customer.id });
   }
+
+  getSubscriptions(customer_id) {
+    return this.__get("/subscriptions", { id: customer_id });
+  }
+
+  cancelSubscription(sub_id) {
+    return this.__delete("/subscriptions", { id: sub_id });
+  }
 }
 
 export default CustomerAPI;

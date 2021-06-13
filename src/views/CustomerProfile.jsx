@@ -1,22 +1,20 @@
-import CustomerForm from '../components/CustomerForm'
-import {SubHOC} from '../store/contexts/SubscriptionContext'
-import PaymentMethod from '../components/PaymentMethod'
-import { useState } from 'react'
+import { Route, Switch } from "react-router";
+import { ROUTES } from "../router";
+import CustomerDrawer from "../components/customer/CustomerDrawer";
+import CustomerPayment from "../components/customer/CustomerPayment";
+import CustomerSubscriptions from "../components/customer/CustomerSubscriptions";
 
-const CustomerProfile = function (props) {
-  let sub = props.sub?.state
-  let hasPrice = sub?.price
-  let hasCustomer = sub?.customer
-  let [moveToPaymentMethod,setPaymentMethod] = useState()
-  let onAC = function () {
-    setPaymentMethod(true)
-  }
+const CustomerProfile = function () {
+  // TODO add in logic for when to show the Customer Drawer and when not to
   return (
     <>
-      {hasPrice && !hasCustomer && <CustomerForm authorizedCustomer={onAC}/>}
-      {(moveToPaymentMethod || (hasPrice && hasCustomer)) &&  <PaymentMethod/>}
+      <CustomerDrawer />
+      <Switch>
+        <Route exact path={ROUTES.CUSTOMER_PROFILE} component={CustomerPayment} />
+        <Route exact path={ROUTES.CUSTOMER_SUBSCRIPTIONS} component={CustomerSubscriptions} />
+      </Switch>
     </>
-  )
-}
+  );
+};
 
-export default SubHOC(CustomerProfile)
+export default CustomerProfile;

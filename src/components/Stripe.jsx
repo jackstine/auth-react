@@ -1,10 +1,5 @@
 import { loadStripe } from "@stripe/stripe-js";
-import {
-  CardElement,
-  Elements,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import { CardElement, Elements, useStripe, useElements } from "@stripe/react-stripe-js";
 import config from "../config";
 import StripeAPI from "../appLogic/stripe/StripeAPI";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -34,23 +29,13 @@ const CardLayout = (props) => {
     event.preventDefault();
     let source = null;
     if (rememberCard) {
-      source = await StripeAPI.createSource(
-        stripe,
-        props.full_name,
-        elements
-      ).then((resp) => {
+      source = await StripeAPI.createSource(stripe, props.full_name, elements).then((resp) => {
         let api = new CustomerAPI();
         return api.authorizeSource(props.customer, resp.source);
       });
     }
-    console.log(source);
     let client_secret = props.sub.latest_invoice.payment_intent.client_secret;
-    StripeAPI.confirmPayment(
-      stripe,
-      client_secret,
-      props.full_name,
-      elements
-    ).then((resp) => {
+    StripeAPI.confirmPayment(stripe, client_secret, props.full_name, elements).then((resp) => {
       console.log(resp);
       let status = resp.paymentIntent.status;
       if (status === "succeeded") {
@@ -67,10 +52,7 @@ const CardLayout = (props) => {
     <form onSubmit={handleSubmit}>
       <CardElement />
       <label>Remember Card for future Transactions</label>
-      <Checkbox
-        onChange={(e) => setRememberCard(e.target.checked)}
-        checked={rememberCard}
-      />
+      <Checkbox onChange={(e) => setRememberCard(e.target.checked)} checked={rememberCard} />
       <button type="submit" disabled={!stripe}>
         Pay
       </button>

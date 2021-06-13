@@ -11,10 +11,15 @@ const PaymentMethod = function (props) {
   let [sources, setSources] = useState([]);
   useEffect(() => {
     let api = new CustomerAPI();
-    api.getSources(customer).then((resp) => {
-      sources.push(resp);
-      setSources([...sources]);
-    });
+    api
+      .getSources(customer)
+      .then((resp) => {
+        sources.push(resp);
+        setSources([...sources]);
+      })
+      .catch((resp) => {
+        // do nothing
+      });
   }, []); // only needs to occur once
   let Cards = sources.map((el) => {
     return <div>{el.card.last4}</div>;

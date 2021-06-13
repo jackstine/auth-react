@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom'
-import {ROUTES} from '../router'
-import {AppBar, Toolbar, Button, Typography} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
-import {UserHOC} from '../store/contexts/UserContext'
+import { NavLink } from "react-router-dom";
+import { ROUTES } from "../router";
+import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { UserHOC } from "../store/contexts/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = function ({user, children}) {
-  let classes = useStyles()
-  let loginText = 'Login'
-  let loginRoute = ROUTES.LOGIN
-  if (user.state.user_id) {
-    loginText = 'User Page'
-    loginRoute = ROUTES.USER
+const Header = function ({ user, children }) {
+  let classes = useStyles();
+  let loginText = "Login";
+  let loginRoute = ROUTES.LOGIN;
+  if (user.state.email) {
+    loginText = "User Page";
+    loginRoute = ROUTES.USER;
   }
   return (
     <>
@@ -44,7 +44,7 @@ const Header = function ({user, children}) {
       </AppBar>
       {children}
     </>
-  )
-}
+  );
+};
 
-export default UserHOC(Header)
+export default UserHOC(Header);

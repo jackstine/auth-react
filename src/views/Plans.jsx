@@ -21,29 +21,28 @@ const Plans = function (props) {
         // TODO need to make sure the prices is price, and not a Array
         let price = productPrice.prices[0];
         let newUser = { ...user };
+        // OK..... need to keep
         newUser.user_id = user.id;
         // TODO if there is an error you are out of luck
-        new CustomerAPI()
-          .authorizeCustomer(newUser, product, price)
-          .then((sub) => {
-            console.log(sub); // OUT
-            if (sub.has_customer) {
-              dispatchSub({
-                type: SUB_ACTIONS.SUBSCRIPE_CUSTOMER_WITH_PRICE,
-                state: {
-                  price: price,
-                  sub: sub.subscription,
-                  customer: sub.customer,
-                },
-              });
-            } else {
-              dispatchSub({
-                type: SUB_ACTIONS.ADD_PRICE,
-                state: { price: price },
-              });
-            }
-            history.push(ROUTES.CUSTOMER_PROFILE);
-          });
+        new CustomerAPI().authorizeCustomer(newUser, product, price).then((sub) => {
+          console.log(sub); // OUT
+          if (sub.has_customer) {
+            dispatchSub({
+              type: SUB_ACTIONS.SUBSCRIPE_CUSTOMER_WITH_PRICE,
+              state: {
+                price: price,
+                sub: sub.subscription,
+                customer: sub.customer,
+              },
+            });
+          } else {
+            dispatchSub({
+              type: SUB_ACTIONS.ADD_PRICE,
+              state: { price: price },
+            });
+          }
+          history.push(ROUTES.CUSTOMER_PROFILE);
+        });
       } else {
         // TODO later
         // TODO need to get the plan id information as well
